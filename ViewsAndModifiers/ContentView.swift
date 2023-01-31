@@ -10,7 +10,10 @@ import SwiftUI
 struct GridStack<Content: View>: View {
     let rows: Int
     let columns: Int
-    let content: (Int, Int) -> Content
+    /**
+     For more flexibility we could leverage the same @ViewBuilder attribute used by SwiftUI for the body property of its views.
+     */
+    @ViewBuilder let content: (Int, Int) -> Content
     
     var body: some View {
         VStack {
@@ -36,10 +39,11 @@ struct ContentView: View {
 //        }
 //        .padding()
         GridStack(rows: 4, columns: 4) { row, col in
-            HStack {
-                Image(systemName: "\(row * 4 + col).circle")
-                Text("R\(row) C\(col)")
-            }
+            /**
+             With that in place SwiftUI will now automatically create an implicit horizontal stack inside our cell closure:
+             */
+            Image(systemName: "\(row * 4 + col).circle")
+            Text("R\(row) C\(col)")
         }
     }
 }
